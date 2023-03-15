@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Model",
+            "name": "Train",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/model.py",
+            "program": "${workspaceFolder}/train.py",
             "cwd": "${workspaceFolder}",
             "args": [
 
