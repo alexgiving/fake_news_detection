@@ -1,8 +1,9 @@
+from typing import Generator, Tuple
+
 import pandas as pd
 import torch
-from transformers import AutoTokenizer
 from sklearn.model_selection import train_test_split
-from typing import Generator, Tuple
+from transformers import AutoTokenizer
 
 
 class FakeNewsDataset:
