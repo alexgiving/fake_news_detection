@@ -1,3 +1,7 @@
 torch
 torchvision
 transformers
+pandas
+ipywidgets
+numpy
+scikit-learn
