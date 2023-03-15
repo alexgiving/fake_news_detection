@@ -27,7 +27,7 @@ class FakeNewsDataset:
         data_array = list(dataset['text'])
         target_array = list(dataset['is_fake'])
 
-        self._X_train, self._X_val, self._y_train, self._y_val = train_test_split(data_array, target_array, test_size = 0.20, random_state = 42)
+        self._X_train, self._X_val, self._y_train, self._y_val = train_test_split(data_array, target_array, test_size = 0.05, random_state = 42)
 
     def _process(self, data_batch, target_batch) -> Tuple[dict, torch.Tensor]:
         data = self._tokenizer(data_batch, padding = True, truncation = True, return_tensors="pt")
