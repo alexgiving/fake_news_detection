@@ -9,7 +9,6 @@ class BertBasedClassificationModel(torch.nn.Module):
         self._device = device
         self._feature_extractor = AutoModel.from_pretrained("distilbert-base-uncased").to(self._device)
         self._fc = torch.nn.Linear(768, 1)
-        # self._relu = torch.nn.ReLU(inplace=False)
         self._activ = torch.nn.Sigmoid()
         self._bn = torch.nn.BatchNorm1d(768)
 
@@ -34,4 +33,3 @@ class BertBasedClassificationModel(torch.nn.Module):
         output = self._fc(embedding)
         output = self._activ(output)
         return torch.as_tensor((output - 0.5) > 0, dtype=torch.int32)
-

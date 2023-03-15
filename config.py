@@ -1,2 +1,6 @@
-n_epoches = 2
-batch_size = 1
+n_epoches = 200
+
+device = 'cpu'
+batch_size = 10
+
+milestones = [30, 60, 90, 120]
