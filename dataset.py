@@ -1,4 +1,4 @@
-from typing import Generator, Tuple
+from typing import Generator, Tuple, List
 
 import pandas as pd
 import torch
@@ -36,7 +36,7 @@ class FakeNewsDataset:
         targets = torch.tensor(target_batch, dtype=torch.float32).view(-1, 1).to(self._device) # flatten
         return data, targets
 
-    def get_batches(self, is_train: bool = True):
+    def get_batches(self, is_train: bool = True) -> List:
         if is_train:
             data = self._X_train
             targets = self._y_train

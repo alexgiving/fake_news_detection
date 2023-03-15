@@ -7,19 +7,8 @@ from dataset import FakeNewsDataset
 from model import BertBasedClassificationModel
 
 
-def batch_logging(mode: str, batch_id: int, total_batch: int, output_time: float):
+def batch_logging(mode: str, batch_id: int, total_batch: int, output_time: float) -> None:
     print(f'Processed {mode} [{batch_id}/{total_batch}] batch time: {output_time:.4f}', flush=True)
-
-
-def main():
-    device = torch.device(device_name)
-    dataset = FakeNewsDataset(fake_path, true_path, device, batch_size, test_size)
-
-    model = BertBasedClassificationModel(device)
-    criterion = torch.nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.01, weight_decay = 0.001, momentum = 0.9)
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=0.1)
-    train(n_epoches, dataset, model, optimizer, criterion, scheduler)
 
 
 def train(
@@ -77,6 +66,18 @@ def train(
 
     print(f'Total time: {time.perf_counter() - training_time}', flush=True)
     print(f'Best val Acc: {best_accuracy:.4f}')
+
+
+def main() -> None:
+    device = torch.device(device_name)
+    dataset = FakeNewsDataset(fake_path, true_path, device, batch_size, test_size)
+
+    model = BertBasedClassificationModel(device)
+    criterion = torch.nn.CrossEntropyLoss().to(device)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.01, weight_decay = 0.001, momentum = 0.9)
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=0.1)
+
+    train(n_epoches, dataset, model, optimizer, criterion, scheduler)
 
 
 if __name__ == '__main__':
