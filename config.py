@@ -6,3 +6,4 @@ fake_path = './dataset/Fake.csv'
 true_path = './dataset/True.csv'
 
 milestones = [30, 60, 90, 120]
+test_size = 0.05
