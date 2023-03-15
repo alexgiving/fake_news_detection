@@ -32,7 +32,7 @@ class FakeNewsDataset:
     def _process(self, data_batch, target_batch) -> Tuple[dict, torch.Tensor]:
         data = self._tokenizer(data_batch, padding = True, truncation = True, return_tensors="pt")
         data = {k:torch.tensor(v).to(self._device) for k,v in data.items()}
-        targets = torch.tensor(target_batch, dtype=torch.float32).view(-1, 1) # flatten
+        targets = torch.tensor(target_batch, dtype=torch.float32).view(-1, 1).to(self._device) # flatten
         return data, targets
 
     def get_batches(self, is_train: bool = True):

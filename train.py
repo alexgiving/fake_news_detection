@@ -2,7 +2,7 @@ import time
 
 import torch
 
-from config import n_epoches, batch_size, milestones, device_name
+from config import n_epoches, batch_size, milestones, device_name, fake_path, true_path
 from dataset import FakeNewsDataset
 from model import BertBasedClassificationModel
 
@@ -13,7 +13,7 @@ def batch_logging(mode: str, batch_id: int, total_batch: int, output_time: float
 
 def main():
     device = torch.device(device_name)
-    dataset = FakeNewsDataset('./dataset/Fake.csv', './dataset/True.csv', device, batch_size)
+    dataset = FakeNewsDataset(fake_path, true_path, device, batch_size)
 
     train_data = dataset.get_batches(is_train=True)
     val_data = dataset.get_batches(is_train=False)
@@ -22,7 +22,7 @@ def main():
     n_val_batches = len(val_data)
 
     model = BertBasedClassificationModel(device)
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.CrossEntropyLoss().to(device)
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01, weight_decay = 0.001, momentum = 0.9)
     scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=0.1)
 
@@ -46,7 +46,7 @@ def main():
         for batch_id, (data, target) in enumerate(val_data):
             batch_time = time.perf_counter()
             predict = model.infer(data)
-            corrects += torch.sum(predict == target)
+            corrects += torch.sum(predict == target).cpu()
             total += len(predict)
             batch_logging('val', batch_id, n_val_batches, time.perf_counter() - batch_time)
 
