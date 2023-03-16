@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, List
+from typing import Generator, List, Tuple
 
 import pandas as pd
 import torch

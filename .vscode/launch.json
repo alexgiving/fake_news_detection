@@ -8,10 +8,16 @@
             "name": "Train",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/train.py",
+            "program": "${workspaceFolder}/script_train.py",
             "cwd": "${workspaceFolder}",
             "args": [
-
+                "--device", "cpu",
+                "--fake-path", "./dataset/Fake.csv",
+                "--true-path", "./dataset/True.csv",
+                "--cache-folder", "./cache/",
+                "--batch-size", "10",
+                "--epoches", "10",
+                //"--is-half" // Only with on CUDA comp[utations
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/"

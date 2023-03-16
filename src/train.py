@@ -3,11 +3,8 @@ from pathlib import Path
 
 import torch
 
-from config import (batch_size, cache_folder, device_name, fake_path,
-                    is_half_precision, milestones, n_epoches, test_size,
-                    true_path)
-from dataset import FakeNewsDataset
-from model import BertBasedClassificationModel
+from src.dataset import FakeNewsDataset
+from src.model import BertBasedClassificationModel
 
 
 def batch_logging(mode: str, batch_id: int, total_batch: int, output_time: float) -> None:
@@ -73,24 +70,3 @@ def train(
 
     print(f'Total time: {time.perf_counter() - training_time}', flush=True)
     print(f'Best val Acc: {best_accuracy:.4f}')
-
-
-def main() -> None:
-    device = torch.device(device_name)
-    dataset = FakeNewsDataset(fake_path, true_path, device, batch_size, test_size)
-
-    model = BertBasedClassificationModel(device)
-    if is_half_precision:
-        model = model.half()
-
-    criterion = torch.nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.01, weight_decay = 0.001, momentum = 0.9)
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=0.1)
-    cache_path = Path(cache_folder)
-    cache_path.mkdir(exist_ok=True, parents=True)
-
-    train(n_epoches, dataset, model, optimizer, criterion, scheduler, cache_path)
-
-
-if __name__ == '__main__':
-    main()
