@@ -43,7 +43,6 @@ def train(
             loss = criterion(predict, target)
             loss.backward()
             batch_logging('train', batch_id, n_train_batches, time.perf_counter() - batch_time)
-            if batch_id == 2: break
 
         model.eval()
         total = 0
@@ -54,7 +53,6 @@ def train(
             corrects += torch.sum(predict == target).cpu().item()
             total += predict.shape[1]
             batch_logging('val', batch_id, n_val_batches, time.perf_counter() - batch_time)
-            if batch_id == 2: break
 
         optimizer.step()
         scheduler.step()
