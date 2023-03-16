@@ -21,10 +21,10 @@ class BertBasedClassificationModel(torch.nn.Module):
 
     def forward(self, input_batch) -> torch.Tensor:
         embedding = self.get_embedding(input_batch)
-        output = self._bn(embedding)
+        # output = self._bn(embedding)
         output = self._fc(embedding)
-        output = self._activ(output)
-        return output
+        # output = self._activ(output)
+        return output.view(1, -1)
 
     @torch.no_grad()
     def infer(self, input_batch) -> torch.Tensor:
