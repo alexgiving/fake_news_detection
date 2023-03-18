@@ -22,8 +22,7 @@ def train(
         scheduler: Optional[torch.optim.lr_scheduler.StepLR] = None,
     ) -> None:
 
-    print(f'Model: {type(model)}, \n Optimizer: {optimizer}')
-        
+    print(f'{model.info()}, Optimizer: {type(optimizer)}')
 
     train_data = dataset.get_batches(is_train=True)
     val_data = dataset.get_batches(is_train=False)

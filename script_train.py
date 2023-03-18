@@ -4,15 +4,25 @@ import torch
 
 from src.arguments import parse
 from src.dataset import FakeNewsDataset
-from src.model import ClassBertModel, NormalizedClassBertModel, DoubleHeadNormalizedClassBertModel
+from src.model import ClassBertModel, NormalizedClassBertModel, DFCNormalizedClassBertModel
 from src.train import train
 
 
-def main(device_str: str, fake_path: str, true_path: str, cache_folder: str, batch_size: int, n_epoches: int, is_half: bool) -> None:
-    device = torch.device(device_str)
-    dataset = FakeNewsDataset(fake_path, true_path, device, batch_size, test_size=0.05)
+def main(
+        device_str: str,
+        fake_path: str,
+        true_path: str,
+        cache_folder: str,
+        batch_size: int,
+        n_epoches: int,
+        is_half: bool,
+        last_states: int) -> None:
 
-    model = DoubleHeadNormalizedClassBertModel(device)
+    device = torch.device(device_str)
+    dataset = FakeNewsDataset(fake_path, true_path,
+                              device, batch_size, test_size=0.05)
+
+    model = DFCNormalizedClassBertModel(device, last_states=last_states)
     if is_half:
         model = model.half()
 
@@ -32,16 +42,17 @@ def main(device_str: str, fake_path: str, true_path: str, cache_folder: str, bat
     cache_path.mkdir(exist_ok=True, parents=True)
 
     train(
-        n_epoches = n_epoches,
-        dataset = dataset,
-        model = model,
-        optimizer = optimizer,
-        criterion = criterion,
-        cache_path = cache_path,
-        scheduler = scheduler
-        )
+        n_epoches=n_epoches,
+        dataset=dataset,
+        model=model,
+        optimizer=optimizer,
+        criterion=criterion,
+        cache_path=cache_path,
+        scheduler=scheduler
+    )
 
 
 if __name__ == '__main__':
     args = parse()
-    main(args.device, args.fake_path, args.true_path, args.cache_folder, args.batch_size, args.epoches, args.is_half)
+    main(args.device, args.fake_path, args.true_path, args.cache_folder,
+         args.batch_size, args.epoches, args.is_half, args.last_states)

@@ -17,6 +17,7 @@
                 "--cache-folder", "./cache/",
                 "--batch-size", "10",
                 "--epoches", "10",
+                "--last-states", "1",
                 //"--is-half" // Only with on CUDA comp[utations
             ],
             "env": {

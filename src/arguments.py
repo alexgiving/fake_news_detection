@@ -41,7 +41,15 @@ def parse() -> Namespace:
 
     parser.add_argument(
         "--is-half",
-        action='store_true'
+        action='store_true',
+        help='Used to train model at half presision'
+        )
+    
+    parser.add_argument(
+        "--last-states",
+        type=int,
+        default=1,
+        help='Define how many last states from embedding are used for training'
         )
 
     return parser.parse_args()
