@@ -2,9 +2,10 @@ import time
 from pathlib import Path
 
 import torch
+from typing import Optional
 
 from src.dataset import FakeNewsDataset
-from src.model import BertBasedClassificationModel
+from src.model import BaseModel
 
 
 def batch_logging(mode: str, batch_id: int, total_batch: int, output_time: float) -> None:
@@ -14,12 +15,15 @@ def batch_logging(mode: str, batch_id: int, total_batch: int, output_time: float
 def train(
         n_epoches: int, 
         dataset: FakeNewsDataset,
-        model: BertBasedClassificationModel,
+        model: BaseModel,
         optimizer: torch.optim.Optimizer,
         criterion: torch.nn.Module,
-        scheduler: torch.optim.lr_scheduler.MultiStepLR,
-        cache_path: Path
+        cache_path: Path,
+        scheduler: Optional[torch.optim.lr_scheduler.StepLR] = None,
     ) -> None:
+
+    print(f'Model: {type(model)}, \n Optimizer: {optimizer}')
+        
 
     train_data = dataset.get_batches(is_train=True)
     val_data = dataset.get_batches(is_train=False)
@@ -52,7 +56,7 @@ def train(
             batch_logging('val', batch_id, n_val_batches, time.perf_counter() - batch_time)
 
         optimizer.step()
-        scheduler.step()
+        if scheduler: scheduler.step() 
 
         accuracy = corrects/total
         if accuracy > best_accuracy:
