@@ -1,7 +1,19 @@
+from enum import Enum
+
 import torch
 from transformers import AutoModel, logging
 
 logging.set_verbosity_error()
+
+
+class ModelEnum(Enum):
+    ClassBert = 'class_bert'
+    NormalizedClassBert = 'normalized_class_bert'
+    DeepNormalizedClassBert = 'deep_normalized_class_bert'
+
+    def __str__(self):
+        return self.value
+
 
 class BaseModel(torch.nn.Module):
 
@@ -61,7 +73,7 @@ class NormalizedClassBertModel(BaseModel):
         return output.view(1, -1)
     
 
-class DFCNormalizedClassBertModel(BaseModel):
+class DeepNormalizedClassBert(BaseModel):
 
     def __init__(self, device: torch.device, last_states: int = 1) -> None:
         super().__init__(device, last_states)

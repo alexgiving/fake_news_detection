@@ -21,7 +21,7 @@ Place them into `./dataset` folder
 * [True.csv](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset?select=True.csv)
 
 
-4. Run training pipeline via command below 
+4. Run training pipeline via command below
 
 ```bash
 python3 script_train.py \
@@ -31,5 +31,14 @@ python3 script_train.py \
     --cache-folder "./cache/" \
     --batch-size 10 \
     --epoches 25 \
-    --last-states 1
+    --last-states 1 \
+    --arch class_bert
 ```
+
+## Supported models
+
+1. Classification Bert Model
+2. Classification Bert Model with batch normalization
+3. Classification Bert Model with batch normalization and hidden linear layer
+
+Run `script_train.py -h` to get help

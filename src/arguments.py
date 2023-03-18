@@ -1,5 +1,5 @@
 from argparse import ArgumentParser, Namespace
-
+from src.model import ModelEnum
 
 def parse() -> Namespace:
     parser = ArgumentParser()
@@ -50,6 +50,14 @@ def parse() -> Namespace:
         type=int,
         default=1,
         help='Define how many last states from embedding are used for training'
+        )
+    
+    parser.add_argument(
+        "--arch",
+        type=ModelEnum,
+        required=True,
+        choices=list(ModelEnum),
+        help='Define model to train'
         )
 
     return parser.parse_args()

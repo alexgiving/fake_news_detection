@@ -4,7 +4,7 @@ import torch
 
 from src.arguments import parse
 from src.dataset import FakeNewsDataset
-from src.model import ClassBertModel, NormalizedClassBertModel, DFCNormalizedClassBertModel
+from src.model import ClassBertModel, NormalizedClassBertModel, DeepNormalizedClassBert, ModelEnum
 from src.train import train
 
 
@@ -16,13 +16,20 @@ def main(
         batch_size: int,
         n_epoches: int,
         is_half: bool,
-        last_states: int) -> None:
+        last_states: int,
+        arch: ModelEnum) -> None:
 
     device = torch.device(device_str)
     dataset = FakeNewsDataset(fake_path, true_path,
                               device, batch_size, test_size=0.05)
+    
+    if arch is ModelEnum.ClassBert:
+        model = ClassBertModel(device, last_states=last_states)
+    elif arch is ModelEnum.NormalizedClassBert:
+        model = NormalizedClassBertModel(device, last_states=last_states)
+    elif arch is ModelEnum.DeepNormalizedClassBert:
+        model = DeepNormalizedClassBert(device, last_states=last_states)
 
-    model = DFCNormalizedClassBertModel(device, last_states=last_states)
     if is_half:
         model = model.half()
 
@@ -55,4 +62,4 @@ def main(
 if __name__ == '__main__':
     args = parse()
     main(args.device, args.fake_path, args.true_path, args.cache_folder,
-         args.batch_size, args.epoches, args.is_half, args.last_states)
+         args.batch_size, args.epoches, args.is_half, args.last_states, args.arch)
