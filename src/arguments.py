@@ -1,5 +1,8 @@
 from argparse import ArgumentParser, Namespace
+
 from src.model import ModelEnum
+from src.optimizer import OptimizerEnum
+
 
 def parse() -> Namespace:
     parser = ArgumentParser()
@@ -58,6 +61,14 @@ def parse() -> Namespace:
         required=True,
         choices=list(ModelEnum),
         help='Define model to train'
+        )
+
+    parser.add_argument(
+        "--optim",
+        type=OptimizerEnum,
+        required=True,
+        choices=list(OptimizerEnum),
+        help='Define optimizer to train'
         )
 
     return parser.parse_args()

@@ -1,8 +1,8 @@
 import time
 from pathlib import Path
+from typing import Optional
 
 import torch
-from typing import Optional
 
 from src.dataset import FakeNewsDataset
 from src.model import BaseModel
@@ -22,7 +22,9 @@ def train(
         scheduler: Optional[torch.optim.lr_scheduler.StepLR] = None,
     ) -> None:
 
-    print(f'{model.info()}, Optimizer: {type(optimizer)}')
+    optimizer_name = str(type(optimizer)).removeprefix("<class 'torch.optim.")[:-2].split('.')[-1]
+
+    print(f'{model.info()}_Optimizer_{optimizer_name}')
 
     train_data = dataset.get_batches(is_train=True)
     val_data = dataset.get_batches(is_train=False)
@@ -60,7 +62,7 @@ def train(
         accuracy = corrects/total
         if accuracy > best_accuracy:
             best_accuracy = accuracy
-            ckpt_path = cache_path / f'model_acc_{accuracy:.4f}_epoch_{epoch_id}.ckpt'
+            ckpt_path = cache_path / f'model_{model.info()}_optim_{optimizer_name}_acc_{accuracy:.4f}_epoch_{epoch_id}.ckpt'
             torch.save(model.state_dict(), ckpt_path)
 
         end_epoch_time = time.perf_counter()

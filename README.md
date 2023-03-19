@@ -25,14 +25,15 @@ Place them into `./dataset` folder
 
 ```bash
 python3 script_train.py \
-    --device gpu \
+    --device cuda \
     --fake-path "./dataset/Fake.csv" \
     --true-path "./dataset/True.csv" \
     --cache-folder "./cache/" \
-    --batch-size 10 \
-    --epoches 25 \
-    --last-states 2 \
-    --arch deep_normalized_class_bert
+    --batch-size 32 \
+    --epoches 50 \
+    --last-states 1 \
+    --arch deep_normalized_class_bert\
+    --optim adam
 ```
 
 ## Supported models
