@@ -5,3 +5,5 @@ pandas
 ipywidgets
 numpy
 scikit-learn
+gdown
+matplotlib
